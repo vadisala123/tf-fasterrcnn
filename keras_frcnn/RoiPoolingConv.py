@@ -17,9 +17,9 @@ class RoiPoolingConv(Layer):
     # Input shape
         list of two 4D tensors [X_img,X_roi] with shape:
         X_img:
-        `(1, channels, rows, cols)` if dim_ordering='th'
+        `(1, channels, rows, cols)` if dim_ordering='channels_first'
         or 4D tensor with shape:
-        `(1, rows, cols, channels)` if dim_ordering='tf'.
+        `(1, rows, cols, channels)` if dim_ordering='channels_last'.
         X_roi:
         `(1,num_rois,4)` list of rois, with ordering (x,y,w,h)
     # Output shape
