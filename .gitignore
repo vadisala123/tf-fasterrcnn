@@ -68,7 +68,7 @@ target/
 
 # IPython Notebook
 .ipynb_checkpoints
-.ipynb
+*.ipynb
 
 # pyenv
 .python-version
@@ -107,3 +107,5 @@ results_imgs-fp-mappen-test/
 
 # Pickle object
 config.pickle
+
+.idea/
