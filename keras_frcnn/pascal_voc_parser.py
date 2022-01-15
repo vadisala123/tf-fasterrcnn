@@ -2,6 +2,8 @@ import os
 import cv2
 import xml.etree.ElementTree as ET
 import numpy as np
+
+
 def get_data(input_path):
 	all_imgs = []
 

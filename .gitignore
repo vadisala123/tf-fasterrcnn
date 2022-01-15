@@ -68,6 +68,7 @@ target/
 
 # IPython Notebook
 .ipynb_checkpoints
+.ipynb
 
 # pyenv
 .python-version
@@ -81,6 +82,7 @@ celerybeat-schedule
 # virtualenv
 venv/
 ENV/
+frcnn\
 
 # Spyder project settings
 .spyderproject
@@ -91,3 +93,16 @@ ENV/
 # hdf5
 *.h5
 *.hdf5
+
+# CSV files
+test.csv
+train.csv
+val.csv
+
+# Folders to Ignore
+train_images\
+test_images\
+valid_images\
+
+# Pickle object
+config.pickle
