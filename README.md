@@ -1,3 +1,10 @@
+# Note
+This repo was cloned from https://github.com/kbardool/keras-frcnn and modified to run with
+ Tensorflow 2.0 & Python 3. The usage of keras was changed to Tensorflow Keras. The changes I
+  have done to original repo is for educational purpose only.  
+  
+ For Usage you can refer to the below steps
+
 # keras-frcnn
 Keras implementation of Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks.
 cloned from https://github.com/yhenon/keras-frcnn/
