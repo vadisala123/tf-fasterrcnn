@@ -82,7 +82,7 @@ celerybeat-schedule
 # virtualenv
 venv/
 ENV/
-frcnn\
+frcnn/
 
 # Spyder project settings
 .spyderproject
@@ -100,9 +100,10 @@ train.csv
 val.csv
 
 # Folders to Ignore
-train_images\
-test_images\
-valid_images\
+train_images/
+test_images/
+valid_images/
+results_imgs-fp-mappen-test/
 
 # Pickle object
 config.pickle
