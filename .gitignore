@@ -83,6 +83,7 @@ celerybeat-schedule
 venv/
 ENV/
 frcnn/
+logs/
 
 # Spyder project settings
 .spyderproject
@@ -109,3 +110,8 @@ results_imgs-fp-mappen-test/
 config.pickle
 
 .idea/
+
+# Text files
+annotate.txt
+train_annotate.txt
+val_annotate.txt
