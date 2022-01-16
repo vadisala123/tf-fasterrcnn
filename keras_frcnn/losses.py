@@ -75,10 +75,10 @@ class FastrcnnRegLoss(Loss):
     def call(self, y_true, y_pred):
         x = tf.cast(y_true[:, :, 4 * self.n_classes:], tf.float32) - y_pred
         x_abs = K.abs(x)
-        x_bool = K.cast(K.less_equal(x_abs, 1.0), 'float32')
+        x_bool = K.cast(K.less_equal(x_abs, 1.0), tf.float32)
         return lambda_cls_regr * K.sum(
             tf.cast(y_true[:, :, 4 * self.n_classes:], tf.float32) * (
-                    x_bool * (0.5 * x * x) + (1 - x_bool) * (x_abs - 0.5)
+                    x_bool * (0.5 * x_abs * x_abs) + (1 - x_bool) * (x_abs - 0.5)
             )) / K.sum(epsilon + tf.cast(y_true[:, :, 4 * self.n_classes:], tf.float32))
 
 

@@ -286,12 +286,9 @@ def threadsafe_generator(f):
     return g
 
 
-def get_anchor_gt(all_img_data, class_count, C, img_length_calc_function, backend, mode='train'):
-    # The following line is not useful with Python 3.5, it is kept for the legacy
-    # all_img_data = sorted(all_img_data)
+def get_anchor_gt(all_img_data, class_count, C, img_length_calc_function, data_format, mode='train'):
 
     sample_selector = SampleSelector(class_count)
-
     while True:
         if mode == 'train':
             np.random.shuffle(all_img_data)
@@ -342,7 +339,7 @@ def get_anchor_gt(all_img_data, class_count, C, img_length_calc_function, backen
 
                 y_rpn_regr[:, y_rpn_regr.shape[1] // 2:, :, :] *= C.std_scaling
 
-                if backend == 'channels_last':
+                if data_format == 'channels_last':
                     x_img = np.transpose(x_img, (0, 2, 3, 1))
                     y_rpn_cls = np.transpose(y_rpn_cls, (0, 2, 3, 1))
                     y_rpn_regr = np.transpose(y_rpn_regr, (0, 2, 3, 1))
