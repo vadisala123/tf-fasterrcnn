@@ -12,13 +12,13 @@ import shutil
 
 import tensorflow as tf
 from tensorflow.keras import backend as K
-from tensorflow.keras.optimizers import Adam, SGD, RMSprop
+from tensorflow.keras.optimizers import Adam, SGD
 from tensorflow.keras.layers import Input
 from tensorflow.keras.models import Model
 from keras_frcnn import config, data_generators
 from keras_frcnn import losses as losses
 import keras_frcnn.roi_helpers as roi_helpers
-from tensorflow.keras.losses import Loss
+
 from tensorflow.python.keras.utils import generic_utils
 
 sys.setrecursionlimit(40000)
@@ -330,9 +330,10 @@ class_mapping_inv = {v: k for k, v in class_mapping.items()}
 global_step = tf.convert_to_tensor(0, tf.int64)
 one_step = tf.convert_to_tensor(1, tf.int64)
 
-print("Training started for %d" % n_epochs)
+print("Training started for %d epochs" % n_epochs)
 for epoch in range(n_epochs):
     print("\nStart of epoch %d" % (epoch + 1,))
+    progbar = generic_utils.Progbar(n_steps)
 
     # Iterate over the batches of the dataset.
     for step, (x_batch_train, y_batch_train, img_data) in enumerate(data_gen_train):
@@ -369,6 +370,12 @@ for epoch in range(n_epochs):
         losses[step, 2] = fast_rcnn_class_loss
         losses[step, 3] = fast_rcnn_reg_loss
         losses[step, 4] = fast_rcnn_class_acc
+
+        progbar.update(step + 1,
+                       [('rpn_cls', rpn_class_loss),
+                        ('rpn_regr', rpn_reg_loss),
+                        ('detector_cls', fast_rcnn_class_loss),
+                        ('detector_regr', fast_rcnn_reg_loss)])
 
         if step == n_steps - 1 and C.verbose:
             mean_overlapping_bboxes = float(sum(rpn_accuracy_rpn_monitor)
@@ -415,16 +422,17 @@ for epoch in range(n_epochs):
                 epoch) + model_path_regex.group(2))
             break
 
-        # Log every 200 batches.
-        if step % 10 == 0:
-            print("Step %d, RPN Cls Loss: %.4f RPN reg Loss: %.4f "
-                  "FRCNN Cls Loss: %.4f FRCNN reg Loss: %.4f" % (
-                      step, float(rpn_class_loss), float(rpn_reg_loss), float(fast_rcnn_class_loss),
-                      float(fast_rcnn_reg_loss)))
+        # # Log every 10 steps.
+        # if step % 10 == 0:
+        #     print("Step %d, RPN Cls Loss: %.4f RPN reg Loss: %.4f "
+        #           "FRCNN Cls Loss: %.4f FRCNN reg Loss: %.4f" % (
+        #            step, float(rpn_class_loss), float(rpn_reg_loss), float(fast_rcnn_class_loss),
+        #               float(fast_rcnn_reg_loss)))
 
     # Reset training metrics at the end of each epoch
     train_classifier_metric.reset_states()
 
+    progbar = generic_utils.Progbar(n_valid_steps)
     # Iterate over the batches of the dataset.
     for step, (x_batch_val, y_batch_val, img_data) in enumerate(data_gen_val):
 
@@ -459,6 +467,12 @@ for epoch in range(n_epochs):
         valid_losses[step, 2] = fast_rcnn_class_loss
         valid_losses[step, 3] = fast_rcnn_reg_loss
         valid_losses[step, 4] = fast_rcnn_class_acc
+
+        progbar.update(step + 1,
+                       [('rpn_cls', rpn_class_loss),
+                        ('rpn_regr', rpn_reg_loss),
+                        ('detector_cls', fast_rcnn_class_loss),
+                        ('detector_regr', fast_rcnn_reg_loss)])
 
         if step == n_valid_steps - 1 and C.verbose:
             mean_overlapping_bboxes = float(sum(rpn_accuracy_rpn_monitor_valid)
