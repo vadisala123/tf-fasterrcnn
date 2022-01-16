@@ -11,7 +11,7 @@ import tensorflow as tf
 from tensorflow.keras import backend as K
 from tensorflow.keras.layers import Input
 from tensorflow.keras.models import Model
-from keras.backend.tensorflow_backend import set_session
+from tensorflow.compat.v1.keras.backend import set_session
 from keras_frcnn import roi_helpers
 
 sys.setrecursionlimit(40000)
@@ -33,6 +33,8 @@ parser.add_option("--config_filename", dest="config_filename",
                   default="config.pickle")
 parser.add_option("--network", dest="network",
                   help="Base network to use. Supports vgg or resnet50.", default='resnet50')
+parser.add_option("--model_weights_path", dest="model_weights_path",
+                  help="Path to the model weights", default='model_frcnn_0009.hdf5')
 
 (options, args) = parser.parse_args()
 
@@ -144,7 +146,8 @@ model_rpn = Model(img_input, rpn_layers)
 model_classifier_only = Model([feature_map_input, roi_input], classifier)
 
 model_classifier = Model([feature_map_input, roi_input], classifier)
-C.model_path = 'model_frcnn_0001.hdf5'
+
+C.model_path = options.model_weights_path
 print(f'Loading weights from {C.model_path}')
 model_rpn.load_weights(C.model_path, by_name=True)
 model_classifier.load_weights(C.model_path, by_name=True)
