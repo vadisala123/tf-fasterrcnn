@@ -32,14 +32,13 @@ line containing:
   train_annotate.txt -v val_annotate.txt`. `train_annotate.txt` and `val_annotate.txt` are
    training and validation files created using the below format.
 
-- Running `train_frcnn.py` will write weights to disk to an hdf5 file, as well as all the setting
- of the training run to a `pickle` file. These settings can then be loaded by `test_frcnn.py` for
-  any testing.
+- Running `train_frcnn_v2.py` or `train_frcnn.py` will write weights to disk to an hdf5 file, as
+ well as all the setting of the training run to a `pickle` file. These settings can then be
+  loaded by `test_frcnn.py` for any testing.
 
 - `test_frcnn.py` can be used to perform inference, given pre-trained weights and a config file
 . Specify a path to the folder containing images and model weights: `python test_frcnn.py -p
- /path/to/test_data
-  --model_weights_path model_frcnn_0009.hdf5`
+ /path/to/test_data --model_weights_path model_frcnn_0009.hdf5`
 - Data augmentation can be applied by specifying `--hf` for horizontal flips, `--vf` for vertical
  flips and `--rot` for 90 degree rotations
 
